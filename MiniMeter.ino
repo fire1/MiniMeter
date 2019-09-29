@@ -17,5 +17,6 @@ void setup() {
 } // end of setup
 
 void loop() {
-    resistance();
+//    resistance();
+    induction();
 }

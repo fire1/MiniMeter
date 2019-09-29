@@ -5,7 +5,8 @@
 #ifndef INDUCTANCEMETER_INDUCTION_H
 #define INDUCTANCEMETER_INDUCTION_H
 
-#include <Arduino.h>
+#include "MiniMeter.h"
+
 // these are checked for in the main program
 volatile unsigned long timerCounts;
 volatile boolean counterReady;
@@ -93,7 +94,7 @@ ISR (TIMER2_COMPA_vect) {
 }  // end of TIMER2_COMPA_vect
 
 
-void showInduction(){
+void induction(){
 
     // stop Timer 0 interrupts from throwing the count out
     byte oldTCCR0A = TCCR0A;
@@ -108,6 +109,7 @@ void showInduction(){
     // adjust counts by counting interval to give frequency in Hz
     float frq = (timerCounts * 1000.0) / timerPeriod;
     double ind = 50000 / (frq / 100);
+
 
 
     Serial.println();
@@ -128,6 +130,20 @@ void showInduction(){
     TCCR0A = oldTCCR0A;
     TCCR0B = oldTCCR0B;
     // let serial stuff finish
+
+
+
+    u8g2.setFont(u8g2_font_lastapprenticebold_tr);    // choose a suitable font
+    u8g2.firstPage();
+    do {
+        u8g2.setFont(u8g2_font_ncenB14_tr);
+        u8g2.setCursor(0, 24);
+        u8g2.print(ind);
+        u8g2.print(" uH");
+        u8g2.setCursor(0, 46);
+        u8g2.print(frq);
+        u8g2.print(" hZ");
+    } while (u8g2.nextPage());
     delay(100);
 }
 

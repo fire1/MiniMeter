@@ -75,6 +75,9 @@ class ReadResistance {
 
 public:
 
+    void setup() {
+        pinMode(pinResistance, INPUT_PULLUP);
+    }
 
     void measure(display *&data) {
         double voltage = getParsedVoltage();

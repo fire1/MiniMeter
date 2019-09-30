@@ -144,6 +144,10 @@ class ReadInduction {
 
 public:
 
+    void setup() {
+        pinMode(5, INPUT_PULLUP);
+    }
+
     void measureHuge() {
         unsigned long pulse = pulseIn(5, HIGH, 1000);
     }

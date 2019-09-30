@@ -148,7 +148,7 @@ public:
         unsigned long pulse = pulseIn(5, HIGH, 1000);
     }
 
-    void measureSmall() {
+    void measureSmall(display *&data) {
 
         // stop Timer 0 interrupts from throwing the count out
         byte oldTCCR0A = TCCR0A;
@@ -163,14 +163,16 @@ public:
         double ind = 50000 / (frq / 100);
 
         char *type;
-        Serial.println();
+
+        data->title = "Induction meter";
+        data->mode = " Small ";
+
         parseLcdFrq(frq, type);
-        Serial.print(frq);
-        Serial.print(type);
-        Serial.print(F(" / "));
+        data->subMeasure = frq;
+        data->subUnits = type;
         parseLcdInd(ind, type);
-        Serial.print(ind);
-        Serial.print(type);
+        data->genMeasure = ind;
+        data->getUnits = type;
 
         // restart timer 0
         TCCR0A = oldTCCR0A;

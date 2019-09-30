@@ -17,7 +17,8 @@
 #define THRESHOLD_EXT 1000 // value is read from internal reference
 #endif
 
-class ReadResistance { ;
+class ReadResistance {
+    int raw;
     boolean vRefExternal = true;
 
 
@@ -58,7 +59,7 @@ class ReadResistance { ;
     }
 
     double getParsedVoltage() {
-        int raw;
+
         raw = readRaw();
         if (raw > THRESHOLD_EXT && !vRefExternal) {
             // switch to external voltage reference
@@ -69,25 +70,20 @@ class ReadResistance { ;
             switchInternalVrf();
             raw = readRaw();
         }
-        return toVolts(raw, (vRefExternal) ? vrfExterna : vrfInternal);
+        return toVolts(raw, (vRefExternal) ? vrfExternal : vrfInternal);
     }
 
 public:
 
 
-    void measure() {
+    void measure(display *&data) {
         double voltage = getParsedVoltage();
-
-        Serial.println();
-        Serial.print(voltage);
-
-        u8g2.setFont(u8g2_font_lastapprenticebold_tr);    // choose a suitable font
-        u8g2.firstPage();
-        do {
-            u8g2.setFont(u8g2_font_ncenB14_tr);
-            u8g2.setCursor(0, 24);
-            u8g2.print(voltage);
-        } while (u8g2.nextPage());
+        data->title = String("MilliOhm meter");
+        data->mode = String("Small ");
+        data->genMeasure = voltage;
+        data->getUnits = msg(12);
+        data->subMeasure = raw;
+        data->subUnits = "";
     }
 };
 

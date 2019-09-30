@@ -11,16 +11,17 @@ void setup() {
     Serial.begin(115200);
     Serial.print(msg(22));
     Serial.print(VERSION);
+    Serial.println();
     pinMode(pinLCDpower, OUTPUT);
     digitalWrite(pinLCDpower, HIGH);
+    u8g2.begin(); // todo make no display
     rr.setup();
     ri.setup();
-    u8g2.begin();
     delay(100);
 } // end of setup
 
 void loop() {
-    rr.measure(showData);
-    draw(showData);
-    delay(100);
+    rr.measure(&showData);
+    draw(&showData);
+    delay(150);
 }

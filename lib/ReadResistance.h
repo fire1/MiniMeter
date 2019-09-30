@@ -5,16 +5,19 @@
 #ifndef MINIMETER_READRESISTANCE_H
 #define MINIMETER_READRESISTANCE_H
 
+#include "../MiniMeter.h"
 //
 // Threshold raw read to switch to internal  voltage reference
 #ifndef THRESHOLD_INT
-#define THRESHOLD_INT 246 // value is read from external reference
+// value is read from external reference
+#define THRESHOLD_INT 246
 #endif
 
 //
 // Threshold raw read to switch to external voltage reference
 #ifndef THRESHOLD_EXT
-#define THRESHOLD_EXT 1000 // value is read from internal reference
+// value is read from internal reference
+#define THRESHOLD_EXT 1000
 #endif
 
 class ReadResistance {
@@ -43,7 +46,7 @@ class ReadResistance {
     }
 
     static inline double toVolts(int raw, float vReference) {
-        return ((float) raw / (float) resSamples * vReference) / 1024.0;
+        return (vReference * raw) / 1024.0;
     }
 
     void switchInternalVrf() {
@@ -53,19 +56,20 @@ class ReadResistance {
     }
 
     void switchExternalVrf() {
-        analogReference(EXTERNAL);
-        vRefExternal = false;
+        analogReference(DEFAULT);
+        vRefExternal = true;
         fooRead();
     }
 
     double getParsedVoltage() {
 
         raw = readRaw();
-        if (raw > THRESHOLD_EXT && !vRefExternal) {
+        if (raw > 1000 && !vRefExternal) {
             // switch to external voltage reference
             switchExternalVrf();
             raw = readRaw();
-        } else if (raw < THRESHOLD_INT && vRefExternal) {
+        }
+        if (raw < 245 && vRefExternal) {
             // switch to internal voltage reference
             switchInternalVrf();
             raw = readRaw();
@@ -79,14 +83,16 @@ public:
         pinMode(pinResistance, INPUT_PULLUP);
     }
 
-    void measure(display *&data) {
+    void measure(display *data) {
         double voltage = getParsedVoltage();
-        data->title = String("MilliOhm meter");
-        data->mode = String("Small ");
+        data->title = F("MilliOhm meter");
+        data->mode = F("Small ");
         data->genMeasure = voltage;
         data->getUnits = msg(12);
         data->subMeasure = raw;
-        data->subUnits = "";
+//        data->subUnits = "";
+        Serial.print("ref ");
+        Serial.print(vRefExternal);
     }
 };
 

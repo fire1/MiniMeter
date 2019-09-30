@@ -22,7 +22,7 @@ const uint8_t pinResistance = A0;
 const uint8_t resSamples = 15;
 volatile uint8_t index = 0;
 
-U8G2_SSD1306_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 struct display {
     String title;
     String mode;
@@ -33,8 +33,7 @@ struct display {
 
 };
 
-display *showData;
-
+display showData;
 
 
 #include "lib/Messages.h"
@@ -52,15 +51,19 @@ void draw(display *data) {
     Serial.print(F(": "));
     Serial.print(data->mode);
     Serial.print(F(" >>> "));
-    Serial.print(data->genMeasure);
+    Serial.print(data->genMeasure, 4);
+    Serial.print(F(" "));
     Serial.print(data->getUnits);
     Serial.print(F(" / "));
-    Serial.print(data->subMeasure);
+    Serial.print(data->subMeasure, 4);
+    Serial.print(F(" "));
     Serial.print(data->subUnits);
+    Serial.print(F(" "));
 
-    u8g2.setFont(u8g2_font_helvR12_tr);
+
     u8g2.firstPage();
     do {
+        u8g2.setFont(u8g2_font_helvR12_tr);
         u8g2.setCursor(4, 4);
         u8g2.print(data->title);
         u8g2.print(F(" | "));

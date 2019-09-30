@@ -14,12 +14,18 @@
 
 #endif
 
-
+#define VERSION 1.0
+const float vrfExterna = 5;
+const float vrfInternal = 1.2;
 const uint8_t pinLCDpower = 2;
+const uint8_t pinResistance = A0;
+const uint8_t resSamples = 15;
 volatile uint8_t index = 0;
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 
-#include "induction.h"
-#include "resistance.h"
+#include "lib/Messages.h"
+#include "lib/ReadResistance.h"
+#include "lib/ReadInduction.h"
+
 #endif //MINIMETER_MINIMETER_H

@@ -5,3 +5,4 @@ project(${PROJECT_NAME})
 
 set(${CMAKE_PROJECT_NAME}_SKETCH MiniMeter.ino)
 generate_arduino_firmware(${CMAKE_PROJECT_NAME})
+set(INCLUDE_DIRECTORIES "../libraries/")

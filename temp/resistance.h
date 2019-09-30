@@ -13,12 +13,12 @@ void resistance() {
 
     resistor = 0;
 
-    for (index = 0; index < 10; index++)
+    for (index = 0; index < resSamples; index++)
         resistor += analogRead(A0);
 
-    resistor /= 10;
+    resistor /= resSamples;
 
-    int buffer = resistor * 5;
+    int buffer = resistor * vrfExterna;
     double Vout = (buffer) / 1024.0;
     buffer = (5 / Vout) - 1;
     float R2 = 202.2 * buffer;

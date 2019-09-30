@@ -1,15 +1,16 @@
 
-// Timer and Counter example
-// Author: Nick Gammon
-// Date: 17th January 2012
 
-// Input: Pin D5
 
 #include "MiniMeter.h"
 
+
+ReadResistance rr;
+ReadInduction ri;
+
 void setup() {
     Serial.begin(115200);
-    Serial.println("Millimeter");
+    Serial.print(msg(22));
+    Serial.print(VERSION);
     pinMode(pinLCDpower, OUTPUT);
     digitalWrite(pinLCDpower, HIGH);
     u8g2.begin();
@@ -17,6 +18,6 @@ void setup() {
 } // end of setup
 
 void loop() {
-//    resistance();
-    induction();
+//    ri.measure();
+    rr.measure();
 }

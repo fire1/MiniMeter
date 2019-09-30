@@ -36,6 +36,15 @@ struct display {
 display *showData;
 
 
+
+#include "lib/Messages.h"
+#include "lib/ReadResistance.h"
+#include "lib/ReadInduction.h"
+
+/**
+ * Display data
+ * @param data
+ */
 void draw(display *data) {
 
     Serial.println();
@@ -48,7 +57,6 @@ void draw(display *data) {
     Serial.print(F(" / "));
     Serial.print(data->subMeasure);
     Serial.print(data->subUnits);
-
 
     u8g2.setFont(u8g2_font_helvR12_tr);
     u8g2.firstPage();
@@ -65,11 +73,8 @@ void draw(display *data) {
         u8g2.print(data->genMeasure);
         u8g2.print(data->getUnits);
     } while (u8g2.nextPage());
+
 }
 
-
-#include "lib/Messages.h"
-#include "lib/ReadResistance.h"
-#include "lib/ReadInduction.h"
 
 #endif //MINIMETER_MINIMETER_H

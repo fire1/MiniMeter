@@ -100,9 +100,7 @@ public:
         data->genMeasure = voltage;
         data->getUnits = msg(12);
         data->subMeasure = raw;
-        data->subUnits = "raw";
-        Serial.print(F(" vRef "));
-        Serial.print(vRefExternal);
+        data->subUnits = (vRefExternal) ? msg(18) : msg(17);
     }
 };
 

@@ -30,8 +30,8 @@ const char msg13[] PROGMEM = "Volts";
 const char msg14[] PROGMEM = "kH";
 const char msg15[] PROGMEM = "kH";
 const char msg16[] PROGMEM = "kH";
-const char msg17[] PROGMEM = "";
-const char msg18[] PROGMEM = "";
+const char msg17[] PROGMEM = " In";
+const char msg18[] PROGMEM = " Ex";
 const char msg19[] PROGMEM = "";
 
 //

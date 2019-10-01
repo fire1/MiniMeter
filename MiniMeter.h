@@ -74,10 +74,9 @@ void draw(display *data) {
 #ifndef NO_DISPLAY
     u8g2.firstPage();
     do {
-        u8g2.setFont(u8g2_font_pxplusibmvga9_tr);
-        u8g2.setCursor(4, 18);
+        u8g2.setFont(u8g2_font_artossans8_8r);
+        u8g2.setCursor(4, 12);
         u8g2.print(data->title);
-        u8g2.setCursor(120, 28);
         u8g2.print(data->mode);
         u8g2.setCursor(4, 62);
         u8g2.print(data->subMeasure);
@@ -86,8 +85,8 @@ void draw(display *data) {
         u8g2.setFont(u8g2_font_logisoso16_tr);
         u8g2.setCursor(12, 44);
         u8g2.print(data->genMeasure);
-        u8g2.setFont(u8g2_font_pxplusibmvga9_tr);
-        u8g2.print(msg(20));
+        u8g2.setFont(u8g2_font_artossans8_8r);
+        u8g2.print(F(" "));
         u8g2.print(data->getUnits);
     } while (u8g2.nextPage());
 #endif

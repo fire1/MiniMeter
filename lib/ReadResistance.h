@@ -86,12 +86,12 @@ public:
     void measure(display *data) {
         double voltage = getParsedVoltage();
         data->title = F("MilliOhm meter");
-        data->mode = F("Small ");
+        data->mode = msg(23);
         data->genMeasure = voltage;
         data->getUnits = msg(12);
         data->subMeasure = raw;
 //        data->subUnits = "";
-        Serial.print("ref ");
+        Serial.print(F(" vRef "));
         Serial.print(vRefExternal);
     }
 };

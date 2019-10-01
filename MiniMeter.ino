@@ -1,5 +1,6 @@
 
 
+#define NO_DISPLAY
 
 #include "MiniMeter.h"
 
@@ -14,7 +15,10 @@ void setup() {
     Serial.println();
     pinMode(pinLCDpower, OUTPUT);
     digitalWrite(pinLCDpower, HIGH);
-    u8g2.begin(); // todo make no display
+
+#ifdef NO_DISPLAY
+    u8g2.begin();
+#endif
     rr.setup();
     ri.setup();
     delay(100);

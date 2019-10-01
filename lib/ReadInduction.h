@@ -64,7 +64,6 @@ ISR (TIMER2_COMPA_vect) {
 }  // end of TIMER2_COMPA_vect
 
 class ReadInduction {
-    String strFrequency;
 
     void startCounting(unsigned int ms) {
         counterReady = false;         // time not up yet
@@ -168,8 +167,8 @@ public:
 
         char *type;
 
-        data->title = "Induction meter";
-        data->mode = " Small ";
+        data->title = F("Induction meter");
+        data->mode = msg(23);
 
         parseLcdFrq(frq, type);
         data->subMeasure = frq;

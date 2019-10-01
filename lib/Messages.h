@@ -39,10 +39,11 @@ const char msg19[] PROGMEM = "";
 const char msg20[] PROGMEM = " ";
 const char msg21[] PROGMEM = "Mode: ";
 const char msg22[] PROGMEM = "MiniMeter ";
+const char msg23[] PROGMEM = " Small ";
 
 const char *const msgTable[] PROGMEM = {
         msg0, msg1, msg2, msg3, msg4, msg5, msg6, msg7, msg8, msg9, msg10, msg11, msg12, msg13, msg14, msg15, msg16,
-        msg17, msg18, msg19, msg20, msg21,msg22,
+        msg17, msg18, msg19, msg20, msg21,msg22, msg23
 };
 
 

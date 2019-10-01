@@ -6,6 +6,8 @@
 #define MINI_METER_H
 
 #include <Arduino.h>
+
+#ifdef NO_DISPLAY
 #include <U8g2lib.h>
 
 #ifndef _U8G2LIB_HH
@@ -13,6 +15,8 @@
 #include "../libraries/U8g2/src/U8g2lib.h"
 
 #endif
+#endif
+
 
 #define VERSION 1.0
 const float vrfExternal = 5;
@@ -22,7 +26,11 @@ const uint8_t pinResistance = A0;
 const uint8_t resSamples = 15;
 volatile uint8_t index = 0;
 
+#ifdef NO_DISPLAY
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
+#endif
+
+
 struct display {
     String title;
     String mode;
@@ -30,7 +38,6 @@ struct display {
     char *getUnits;
     float subMeasure;
     char *subUnits;
-
 };
 
 display showData;
@@ -61,6 +68,7 @@ void draw(display *data) {
     Serial.print(F(" "));
 
 
+#ifdef NO_DISPLAY
     u8g2.firstPage();
     do {
         u8g2.setFont(u8g2_font_helvR12_tr);
@@ -76,7 +84,7 @@ void draw(display *data) {
         u8g2.print(data->genMeasure);
         u8g2.print(data->getUnits);
     } while (u8g2.nextPage());
-
+#endif
 }
 
 

@@ -35,8 +35,12 @@ class ReadResistance {
         return readSamples;
     }
 
+    /**
+      * After changing the analog reference,
+      * the first few readings from analogRead() may not be accurate.
+     */
     static void fooRead() {
-        // After changing the analog reference, the first few readings from analogRead() may not be accurate.
+
         index = 0;
         while (index < 10) {
             analogRead(pinResistance);
@@ -45,8 +49,14 @@ class ReadResistance {
         }
     }
 
-    static inline double toVolts(int raw, float vReference) {
-        return (vReference * raw) / 1024.0;
+    /**
+    *
+    * @param reading
+    * @param vReference
+    * @return
+    */
+    static inline double toVolts(int reading, float vReference) {
+        return (vReference * (float) reading) / 1024.0;
     }
 
     void switchInternalVrf() {
@@ -79,18 +89,18 @@ class ReadResistance {
 
 public:
 
-    void setup() {
+    static void setup() {
         pinMode(pinResistance, INPUT_PULLUP);
     }
 
     void measure(display *data) {
         double voltage = getParsedVoltage();
-        data->title = F("MilliOhm meter");
+        data->title = F("MilliOhm ");
         data->mode = msg(23);
         data->genMeasure = voltage;
         data->getUnits = msg(12);
         data->subMeasure = raw;
-//        data->subUnits = "";
+        data->subUnits = "raw";
         Serial.print(F(" vRef "));
         Serial.print(vRefExternal);
     }

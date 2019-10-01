@@ -143,7 +143,7 @@ class ReadInduction {
 
 public:
 
-    void setup() {
+    static void setup() {
         pinMode(5, INPUT_PULLUP);
     }
 
@@ -167,7 +167,7 @@ public:
 
         char *type;
 
-        data->title = F("Induction meter");
+        data->title = F("Induction ");
         data->mode = msg(23);
 
         parseLcdFrq(frq, type);

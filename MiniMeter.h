@@ -7,7 +7,10 @@
 
 #include <Arduino.h>
 
-#ifdef NO_DISPLAY
+#undef NO_DISPLAY
+#ifndef NO_DISPLAY
+
+#include <Wire.h>
 #include <U8g2lib.h>
 
 #ifndef _U8G2LIB_HH
@@ -26,8 +29,8 @@ const uint8_t pinResistance = A0;
 const uint8_t resSamples = 15;
 volatile uint8_t index = 0;
 
-#ifdef NO_DISPLAY
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
+#ifndef NO_DISPLAY
+U8G2_SSD1306_128X64_NONAME_2_HW_I2C u8g2(U8G2_R0);
 #endif
 
 
@@ -68,20 +71,23 @@ void draw(display *data) {
     Serial.print(F(" "));
 
 
-#ifdef NO_DISPLAY
+#ifndef NO_DISPLAY
     u8g2.firstPage();
     do {
-        u8g2.setFont(u8g2_font_helvR12_tr);
-        u8g2.setCursor(4, 4);
+        u8g2.setFont(u8g2_font_pxplusibmvga9_tr);
+        u8g2.setCursor(4, 18);
         u8g2.print(data->title);
-        u8g2.print(F(" | "));
+        u8g2.setCursor(120, 28);
         u8g2.print(data->mode);
-        u8g2.setCursor(4, 50);
+        u8g2.setCursor(4, 62);
         u8g2.print(data->subMeasure);
+        u8g2.print(msg(20));
         u8g2.print(data->subUnits);
-        u8g2.setFont(u8g2_font_logisoso20_tr);
-        u8g2.setCursor(16, 20);
+        u8g2.setFont(u8g2_font_logisoso16_tr);
+        u8g2.setCursor(12, 44);
         u8g2.print(data->genMeasure);
+        u8g2.setFont(u8g2_font_pxplusibmvga9_tr);
+        u8g2.print(msg(20));
         u8g2.print(data->getUnits);
     } while (u8g2.nextPage());
 #endif

@@ -38,9 +38,9 @@ struct display {
     String title;
     String mode;
     double genMeasure;
-    char *getUnits;
+    String getUnits;
     float subMeasure;
-    char *subUnits;
+    String subUnits;
 };
 
 display showData;
@@ -84,7 +84,7 @@ void draw(display *data) {
         u8g2.print(data->subUnits);
         u8g2.setFont(u8g2_font_logisoso16_tr);
         u8g2.setCursor(12, 44);
-        u8g2.print(data->genMeasure);
+        u8g2.print(data->genMeasure, 4);
         u8g2.setFont(u8g2_font_artossans8_8r);
         u8g2.print(F(" "));
         u8g2.print(data->getUnits);

@@ -29,7 +29,8 @@ void setup() {
 } // end of setup
 
 void loop() {
-    rr.measure(&showData);
+    ri.measureSmall(&showData);
+//    rr.measure(&showData);
     draw(&showData);
     delay(150);
 }

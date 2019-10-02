@@ -21,6 +21,7 @@
 #endif
 
 class ReadResistance {
+    float calibrate = 0.2878;
     int raw;
     boolean vRefExternal = true;
 
@@ -97,7 +98,7 @@ public:
         double voltage = getParsedVoltage();
         data->title = F("MilliOhm ");
         data->mode = msg(23);
-        data->genMeasure = voltage;
+        data->genMeasure = voltage - calibrate;
         data->getUnits = msg(12);
         data->subMeasure = raw;
         data->subUnits = (vRefExternal) ? msg(18) : msg(17);

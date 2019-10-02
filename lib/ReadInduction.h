@@ -64,6 +64,8 @@ ISR (TIMER2_COMPA_vect) {
 }  // end of TIMER2_COMPA_vect
 
 class ReadInduction {
+    volatile unsigned long avrPulse;
+    volatile unsigned long pulse;
 
     void startCounting(unsigned int ms) {
         counterReady = false;         // time not up yet
@@ -108,7 +110,7 @@ class ReadInduction {
  * @param name
  * @return
  */
-    static float parseLcdFrq(float &frequency, char *&name) {
+    static float parseLcdFrq(float &frequency, String &name) {
         if (frequency > 1000000) {
             frequency /= 1000000;
             name = msg(2);
@@ -126,7 +128,7 @@ class ReadInduction {
  * @param name
  * @return
  */
-    static double parseLcdInd(double &induction, char *&name) {
+    static double parseLcdInd(double &induction, String &name) {
         if (induction > 1000000) {
             induction /= 1000000;
             name = msg(6);
@@ -141,6 +143,21 @@ class ReadInduction {
         }
     }
 
+
+    double probingPeakVoltage() {
+        index = 0;
+        avrPulse = 0;
+        while (index < 5) {
+            pulse = pulseInLong(5, HIGH, 1000);
+            if (pulse > 10) {
+                index++;
+                avrPulse += pulse;
+            }
+            delayMicroseconds(250);
+        }
+        return avrPulse / (index);
+    }
+
 public:
 
     static void setup() {
@@ -151,7 +168,17 @@ public:
         unsigned long pulse = pulseIn(5, HIGH, 1000);
     }
 
-    void measureSmall(display *&data) {
+    void measureSmall(display *data) {
+        double ind = 0;
+        data->title = F("Induction ");
+
+        unsigned long pulse = pulseInLong(5, HIGH, 500);
+        if (pulse > 10) {
+            ind = probingPeakVoltage() * 1000;
+            data->mode = msg(24);
+        } else {
+            data->mode = msg(23);
+        }
 
         // stop Timer 0 interrupts from throwing the count out
         byte oldTCCR0A = TCCR0A;
@@ -163,19 +190,17 @@ public:
         while (!counterReady) {}  // loop until count over
         // adjust counts by counting interval to give frequency in Hz
         float frq = float((timerCounts * 1000.0) / timerPeriod);
-        double ind = 50000 / (frq / 100);
+        ind = (ind == 0) ? 50000 / (frq / 100) : ind;
 
         char *type;
 
-        data->title = F("Induction ");
-        data->mode = msg(23);
 
-        parseLcdFrq(frq, type);
+        parseLcdFrq(frq, data->subUnits);
         data->subMeasure = frq;
-        data->subUnits = type;
-        parseLcdInd(ind, type);
+
+        parseLcdInd(ind, data->getUnits);
         data->genMeasure = ind;
-        data->getUnits = type;
+
 
         // restart timer 0
         TCCR0A = oldTCCR0A;

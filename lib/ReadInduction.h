@@ -129,17 +129,13 @@ class ReadInduction {
  * @return
  */
     static double parseLcdInd(double &induction, String &name) {
-        if (induction > 1000000) {
-            induction /= 1000000;
-            name = msg(6);
-        } else if (induction > 1000) {
+        Serial.print("RAW: ");
+        Serial.print(induction);
+        if (induction > 999) {
             induction /= 1000;
-            name = msg(5);
-        } else if (induction < 1) {
-            induction *= 1000;
-            name = msg(3);
+            name = msg(5);//mh
         } else {
-            name = msg(4);
+            name = msg(4);//uh
         }
     }
 
@@ -173,12 +169,12 @@ public:
         data->title = F("Induction ");
 
         unsigned long pulse = pulseInLong(5, HIGH, 500);
-        if (pulse > 10) {
-            ind = probingPeakVoltage() * 1000;
-            data->mode = msg(24);
-        } else {
-            data->mode = msg(23);
-        }
+//        if (pulse > 10) {
+//            ind = probingPeakVoltage() * 1000;
+//            data->mode = msg(24);
+//        } else {
+//            data->mode = msg(23);
+//        }
 
         // stop Timer 0 interrupts from throwing the count out
         byte oldTCCR0A = TCCR0A;
@@ -189,18 +185,17 @@ public:
         startCounting(500);  // how many ms to count for
         while (!counterReady) {}  // loop until count over
         // adjust counts by counting interval to give frequency in Hz
-        float frq = float((timerCounts * 1000.0) / timerPeriod);
-        ind = (ind == 0) ? 50000 / (frq / 100) : ind;
+        float khz = float((timerCounts * 1000.0) / timerPeriod);
+        ind = (50000 / (khz / 1000));
 
         char *type;
 
 
-        parseLcdFrq(frq, data->subUnits);
-        data->subMeasure = frq;
+        parseLcdFrq(khz, data->subUnits);
+        data->subMeasure = khz;
 
         parseLcdInd(ind, data->getUnits);
         data->genMeasure = ind;
-
 
         // restart timer 0
         TCCR0A = oldTCCR0A;
